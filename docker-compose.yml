@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 1. Serviço da Aplicação (PHP + Apache)
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile  # <--- MUDANÇA AQUI
+    container_name: pokedex_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html/
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=pokedex_db
+    restart: always
+
+  # 2. Serviço do Banco de Dados (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: pokedex_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root       # Senha do usuário root
+      MYSQL_DATABASE: pokedex_db    # Cria este banco de dados ao iniciar
+    volumes:
+      - db_data:/var/lib/mysql        # Persistência dos dados
+      - ./db_init:/docker-entrypoint-initdb.d # Executa o script .sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+
+  # 3. Serviço do phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pokedex_phpmyadmin
+    ports:
+      - "8081:80"  # Acesse no navegador: http://localhost:8081
+    environment:
+      - PMA_HOST=db        # Conecta ao serviço 'db'
+      - PMA_USER=root      # Usuário
+      - PMA_PASSWORD=root  # Senha
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  db_data: # Define o volume de persistência do banco
