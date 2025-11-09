@@ -1,0 +1,12 @@
+[2025-11-09 23:42:49] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
+[2025-11-09 23:43:00] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
+[2025-11-09 23:43:11] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
+[2025-11-09 23:43:21] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
+[2025-11-09 23:43:21] Iniciando processo de criação de Pokémon.
+[2025-11-09 23:43:21] Dados recebidos do formulário: {"nome":"teste de externo","descricao":"","tipo_principal_id":"14","tipo_secundario_id":"14","nivel":"5","habilidade":"","hp":"10","ataque":"10","defesa":"10","ataque_especial":"10","defesa_especial":"10","velocidade":"10"}
+[2025-11-09 23:43:21] Iniciando transação do banco de dados.
+[2025-11-09 23:43:21] Preparando SQL: INSERT INTO pokemons (nome, descricao, tipo_principal_id, tipo_secundario_id, nivel, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2025-11-09 23:43:21] !!! ERRO DE BANCO DE DADOS DETECTADO !!!
+[2025-11-09 23:43:21] Mensagem: Check constraint 'chk_tipos_diferentes' is violated.
+[2025-11-09 23:43:21] ROLLBACK da transação executado.
+[2025-11-09 23:43:21] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
