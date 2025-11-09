@@ -103,13 +103,9 @@ while ($row = $result_tipos->fetch_assoc()) {
                         <div class="col-md-8">
                             <h5 class="mb-3">Informações Básicas</h5>
                             <div class="row g-3 mb-4">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <label for="nome" class="form-label">Nome</label>
                                     <input type="text" class="form-control" name="nome" id="nome" value="<?= htmlspecialchars($pokemon['nome']) ?>" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="nivel" class="form-label">Nível</label>
-                                    <input type="number" class="form-control" name="nivel" id="nivel" value="<?= $pokemon['nivel'] ?>" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="tipo_principal_id" class="form-label">Tipo Principal</label>

@@ -77,7 +77,6 @@ $result = $conn->query($sql);
                                     <img src="<?= htmlspecialchars($pokemon['tipo_icone'] ?? '') ?>" alt="<?= htmlspecialchars($pokemon['tipo_nome']) ?>" class="me-1" style="width: 16px; height: 16px;">
                                     <?= htmlspecialchars($pokemon['tipo_nome'] ?? 'N/A') ?>
                                 </span>
-                                <span class="ms-2">Nível: <?= htmlspecialchars($pokemon['nivel'] ?? '??') ?></span>
                             </p>
                         </div>
                         <div class="card-footer bg-light d-flex justify-content-end gap-2">

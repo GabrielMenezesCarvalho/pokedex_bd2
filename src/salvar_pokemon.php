@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $params = [
         'nome' => $_POST['nome'], 'descricao' => $_POST['descricao'],
         'tipo_principal_id' => $_POST['tipo_principal_id'], 'tipo_secundario_id' => $tipo_secundario_id,
-        'nivel' => $_POST['nivel'], 'habilidade' => $_POST['habilidade'],
+        'habilidade' => $_POST['habilidade'],
         'imagem_existente' => $_POST['imagem_existente'],
         'hp' => $_POST['hp'], 'ataque' => $_POST['ataque'], 'defesa' => $_POST['defesa'],
         'ataque_especial' => $_POST['ataque_especial'], 'defesa_especial' => $_POST['defesa_especial'],
@@ -98,24 +98,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (empty($id)) {
             // INSERT
-            $sql = "INSERT INTO pokemons (nome, descricao, tipo_principal_id, tipo_secundario_id, nivel, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO pokemons (nome, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             log_message("Preparando SQL: " . $sql);
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssiiisiiiiiis", ...array_values($db_params));
+            $stmt->bind_param("ssiisiiiiiss", ...array_values($db_params));
         } else {
             // UPDATE
-            $sql = "UPDATE pokemons SET nome = ?, descricao = ?, tipo_principal_id = ?, tipo_secundario_id = ?, nivel = ?, habilidade = ?, hp = ?, ataque = ?, defesa = ?, ataque_especial = ?, defesa_especial = ?, velocidade = ?, imagem_padrao = ? WHERE id = ?";
+            $sql = "UPDATE pokemons SET nome = ?, descricao = ?, tipo_principal_id = ?, tipo_secundario_id = ?, habilidade = ?, hp = ?, ataque = ?, defesa = ?, ataque_especial = ?, defesa_especial = ?, velocidade = ?, imagem_padrao = ? WHERE id = ?";
             log_message("Preparando SQL: " . $sql);
             $stmt = $conn->prepare($sql);
             $update_params = array_values($db_params);
             $update_params[] = $id;
-            $stmt->bind_param("ssiiisiiiiiisi", ...$update_params);
+            $stmt->bind_param("ssiisiiiiissi", ...$update_params);
         }
 
         $stmt->execute();
         log_message("SQL executado com sucesso.");
         
-        // ... (resto da lógica de salvar fraquezas, etc.)
+        if (empty($id)) {
+            $id = $conn->insert_id;
+        }
+
+        if (!empty($_POST['fraquezas'])) {
+            $stmt_delete_fraq = $conn->prepare("DELETE FROM fraquezas WHERE pokemon_id = ?");
+            $stmt_delete_fraq->bind_param("i", $id);
+            $stmt_delete_fraq->execute();
+            $stmt_delete_fraq->close();
+
+            $sql_fraq = "INSERT INTO fraquezas (pokemon_id, tipo_id) VALUES (?, ?)";
+            $stmt_fraq = $conn->prepare($sql_fraq);
+            foreach ($_POST['fraquezas'] as $tipo_id) {
+                $stmt_fraq->bind_param("ii", $id, $tipo_id);
+                $stmt_fraq->execute();
+            }
+            $stmt_fraq->close();
+        }
 
         $conn->commit();
         log_message("COMMIT da transação de {$action} bem-sucedido.");
@@ -123,7 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $conn->rollback();
-        // AQUI ESTÁ A PROVA QUE VOCÊ PRECISA
         log_message("!!! ERRO DE BANCO DE DADOS DETECTADO !!!");
         log_message("Mensagem: " . $e->getMessage());
         log_message("ROLLBACK da transação executado.");
