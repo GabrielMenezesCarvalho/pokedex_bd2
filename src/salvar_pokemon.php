@@ -153,7 +153,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $conn->rollback();
-        die("Erro ao salvar Pokémon: " . $e->getMessage());
+
+        // Verifica se o erro é da nossa constraint
+        if (str_contains($e->getMessage(), 'chk_tipos_diferentes')) {
+            // Monta a URL de redirecionamento, preservando o ID se for uma edição
+            $redirect_url = "form_pokemon.php?error=tipos_iguais";
+            if (!empty($id)) {
+                $redirect_url .= "&id=" . $id;
+            }
+            header("Location: " . $redirect_url);
+            exit;
+        } else {
+            // Para todos os outros erros, exibe a mensagem genérica
+            die("Erro ao salvar Pokémon: " . $e->getMessage());
+        }
     }
 
 } else {

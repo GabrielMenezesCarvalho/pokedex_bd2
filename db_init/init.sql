@@ -27,7 +27,8 @@ CREATE TABLE
         defesa_especial INT,
         velocidade INT,
         FOREIGN KEY (tipo_principal_id) REFERENCES tipos (id),
-        FOREIGN KEY (tipo_secundario_id) REFERENCES tipos (id)
+        FOREIGN KEY (tipo_secundario_id) REFERENCES tipos (id),
+        CONSTRAINT chk_tipos_diferentes CHECK (tipo_principal_id <> tipo_secundario_id OR tipo_secundario_id IS NULL)
     ) DEFAULT CHARSET = utf8mb4;
 
 -- Tabela de Fraquezas (Relação N:N entre pokemons e tipos)

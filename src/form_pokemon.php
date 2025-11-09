@@ -73,6 +73,13 @@ while ($row = $result_tipos->fetch_assoc()) {
                 <h1 class="h3 mb-0"><?= $titulo_pagina ?></h1>
             </div>
             <div class="card-body p-4">
+
+                <?php if (isset($_GET['error']) && $_GET['error'] === 'tipos_iguais'): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle"></i> <strong>Erro:</strong> O Tipo Principal e o Tipo Secundário não podem ser iguais.
+                    </div>
+                <?php endif; ?>
+
                 <form action="salvar_pokemon.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?= $pokemon['id'] ?>">
                     <input type="hidden" name="imagem_existente" value="<?= htmlspecialchars($pokemon['imagem_padrao']) ?>">
