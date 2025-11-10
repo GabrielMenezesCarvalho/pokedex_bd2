@@ -4,7 +4,7 @@ include 'conexao.php';
 $sql = "SELECT p.*, t.nome AS tipo_nome, t.icone AS tipo_icone
         FROM pokemons p
         LEFT JOIN tipos t ON p.tipo_principal_id = t.id
-        ORDER BY p.id";
+        ORDER BY p.pokedex_index";
 
 $result = $conn->query($sql);
 ?>

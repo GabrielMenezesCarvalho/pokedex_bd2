@@ -1,10 +1,11 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 include 'conexao.php';
 
 // --- Lógica de Edição (Carregar dados) ---
 $pokemon = [
-    'id' => '', 'nome' => '', 'descricao' => '', 'tipo_principal_id' => '',
-    'tipo_secundario_id' => '', 'nivel' => 5, 'habilidade' => '', 'imagem_padrao' => '',
+    'id' => '', 'nome' => '', 'pokedex_index' => '', 'descricao' => '', 'tipo_principal_id' => '',
+    'tipo_secundario_id' => '', 'habilidade' => '', 'imagem_padrao' => '',
     'hp' => 10, 'ataque' => 10, 'defesa' => 10, 'ataque_especial' => 10, 'defesa_especial' => 10,
     'velocidade' => 10
 ];
@@ -74,23 +75,29 @@ while ($row = $result_tipos->fetch_assoc()) {
             </div>
             <div class="card-body p-4">
 
-                <?php if (isset($_GET['error']) && $_GET['error'] === 'tipos_iguais'): ?>
+                <?php if (isset($_GET['error'])): ?>
                     <div class="alert alert-danger" role="alert">
-                        <i class="fas fa-exclamation-triangle"></i> <strong>Erro:</strong> O Tipo Principal e o Tipo Secundário não podem ser iguais.
+                        <i class="fas fa-exclamation-triangle"></i> <strong>Erro:</strong>
+                        <?php 
+                            if ($_GET['error'] === 'tipos_iguais') {
+                                echo "O Tipo Principal e o Tipo Secundário não podem ser iguais.";
+                            } elseif ($_GET['error'] === 'indice_duplicado') {
+                                echo "O Índice da Pokédex informado já está em uso por outro Pokémon.";
+                            }
+                        ?>
                     </div>
                 <?php endif; ?>
 
                 <form action="salvar_pokemon.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?= $pokemon['id'] ?>">
-                    <input type="hidden" name="imagem_existente" value="<?= htmlspecialchars($pokemon['imagem_padrao']) ?>">
-
+                    <input type="hidden" name="imagem_existente" value="<?= htmlspecialchars($pokemon['imagem_padrao'], ENT_QUOTES, 'UTF-8') ?>">
 
                     <div class="row g-4">
                         <!-- Coluna da Imagem -->
                         <div class="col-md-4">
                             <h5 class="mb-3">Imagem de Perfil</h5>
                             <?php if ($is_edit && !empty($pokemon['imagem_padrao'])): ?>
-                                <img src="<?= htmlspecialchars($pokemon['imagem_padrao']) ?>" alt="Imagem de <?= htmlspecialchars($pokemon['nome']) ?>" class="img-fluid rounded mb-3">
+                                <img src="<?= htmlspecialchars($pokemon['imagem_padrao'], ENT_QUOTES, 'UTF-8') ?>" alt="Imagem de <?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>" class="img-fluid rounded mb-3">
                             <?php endif; ?>
                             <div class="mb-3">
                                 <label for="imagem_padrao" class="form-label">Enviar Nova Imagem</label>
@@ -103,9 +110,13 @@ while ($row = $result_tipos->fetch_assoc()) {
                         <div class="col-md-8">
                             <h5 class="mb-3">Informações Básicas</h5>
                             <div class="row g-3 mb-4">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <label for="nome" class="form-label">Nome</label>
-                                    <input type="text" class="form-control" name="nome" id="nome" value="<?= htmlspecialchars($pokemon['nome']) ?>" required>
+                                    <input type="text" class="form-control" name="nome" id="nome" value="<?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="pokedex_index" class="form-label">Índice</label>
+                                    <input type="number" class="form-control" name="pokedex_index" id="pokedex_index" value="<?= htmlspecialchars($pokemon['pokedex_index'], ENT_QUOTES, 'UTF-8') ?>" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="tipo_principal_id" class="form-label">Tipo Principal</label>
@@ -113,7 +124,7 @@ while ($row = $result_tipos->fetch_assoc()) {
                                         <option value="">Selecione...</option>
                                         <?php foreach ($tipos as $tipo): ?>
                                             <option value="<?= $tipo['id'] ?>" <?= ($tipo['id'] == $pokemon['tipo_principal_id']) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($tipo['nome']) ?>
+                                                <?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -124,18 +135,18 @@ while ($row = $result_tipos->fetch_assoc()) {
                                         <option value="">Nenhum</option>
                                         <?php foreach ($tipos as $tipo): ?>
                                             <option value="<?= $tipo['id'] ?>" <?= ($tipo['id'] == $pokemon['tipo_secundario_id']) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($tipo['nome']) ?>
+                                                <?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-12">
                                     <label for="habilidade" class="form-label">Habilidade Principal</label>
-                                    <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= htmlspecialchars($pokemon['habilidade']) ?>">
+                                    <input type="text" class="form-control" name="habilidade" id="habilidade" value="<?= htmlspecialchars($pokemon['habilidade'], ENT_QUOTES, 'UTF-8') ?>">
                                 </div>
                                 <div class="col-12">
                                     <label for="descricao" class="form-label">Descrição</label>
-                                    <textarea class="form-control" name="descricao" id="descricao" rows="3"><?= htmlspecialchars($pokemon['descricao']) ?></textarea>
+                                    <textarea class="form-control" name="descricao" id="descricao" rows="3"><?= htmlspecialchars($pokemon['descricao'], ENT_QUOTES, 'UTF-8') ?></textarea>
                                 </div>
                             </div>
 
@@ -160,8 +171,8 @@ while ($row = $result_tipos->fetch_assoc()) {
                                         <input class="form-check-input" type="checkbox" name="fraquezas[]" value="<?= $tipo['id'] ?>" id="fraqueza_<?= $tipo['id'] ?>"
                                             <?= (in_array($tipo['id'], $fraquezas_pokemon)) ? 'checked' : '' ?>>
                                         <label class="form-check-label d-flex align-items-center" for="fraqueza_<?= $tipo['id'] ?>">
-                                            <img src="<?= htmlspecialchars($tipo['icone']) ?>" alt="<?= htmlspecialchars($tipo['nome']) ?>" style="width: 16px; height: 16px;" class="me-1">
-                                            <?= htmlspecialchars($tipo['nome']) ?>
+                                            <img src="<?= htmlspecialchars($tipo['icone'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?>" style="width: 16px; height: 16px;" class="me-1">
+                                            <?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?>
                                         </label>
                                     </div>
                                 </div>

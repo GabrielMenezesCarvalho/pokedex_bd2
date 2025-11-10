@@ -11,3 +11,48 @@
 [2025-11-09 23:43:21] ROLLBACK da transação executado.
 [2025-11-09 23:43:21] Conexão com o banco de dados 'pokedex_db' estabelecida com sucesso.
 [2025-11-09 23:49:51] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:21:27] Iniciando processo de criação de Pokémon.
+[2025-11-10 00:21:27] Dados recebidos do formulário: {"nome":"Pikachuuu","pokedex_index":"2","descricao":"","tipo_principal_id":"12","tipo_secundario_id":"12","habilidade":"","hp":"10","ataque":"10","defesa":"10","ataque_especial":"10","defesa_especial":"10","velocidade":"10"}
+[2025-11-10 00:21:27] Iniciando transação do banco de dados.
+[2025-11-10 00:21:27] Preparando SQL: INSERT INTO pokemons (nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2025-11-10 00:21:27] !!! ERRO DE BANCO DE DADOS DETECTADO !!!
+[2025-11-10 00:21:27] Mensagem: Check constraint 'chk_tipos_diferentes' is violated.
+[2025-11-10 00:21:27] ROLLBACK da transação executado.
+[2025-11-10 00:22:18] Iniciando processo de criação de Pokémon.
+[2025-11-10 00:22:18] Dados recebidos do formulário: {"nome":"xablau","pokedex_index":"97","descricao":"","tipo_principal_id":"8","tipo_secundario_id":"5","habilidade":"","hp":"10","ataque":"10","defesa":"10","ataque_especial":"10","defesa_especial":"10","velocidade":"10"}
+[2025-11-10 00:22:18] Nova imagem '97.png' enviada. Tentando processar...
+[2025-11-10 00:22:18] ERRO: Falha ao mover a imagem enviada para 'images/profilePhoto/6911303aca2056.48929455.png'.
+[2025-11-10 00:22:18] Iniciando transação do banco de dados.
+[2025-11-10 00:22:18] Preparando SQL: INSERT INTO pokemons (nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2025-11-10 00:22:18] SQL executado com sucesso.
+[2025-11-10 00:22:18] COMMIT da transação de criação bem-sucedido.
+[2025-11-10 00:24:03] Iniciando processo de criação de Pokémon.
+[2025-11-10 00:24:03] Dados recebidos do formulário: {"nome":"xablauuu","pokedex_index":"97","descricao":"","tipo_principal_id":"8","tipo_secundario_id":"5","habilidade":"","hp":"10","ataque":"10","defesa":"10","ataque_especial":"10","defesa_especial":"10","velocidade":"10"}
+[2025-11-10 00:24:03] Nova imagem '47.png' enviada. Tentando processar...
+[2025-11-10 00:24:03] Upload da imagem '691130a3a1b469.31130103.png' bem-sucedido para 'images/profilePhoto/691130a3a1b469.31130103.png'.
+[2025-11-10 00:24:03] Iniciando transação do banco de dados.
+[2025-11-10 00:24:03] Preparando SQL: INSERT INTO pokemons (nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2025-11-10 00:24:03] !!! ERRO DE BANCO DE DADOS DETECTADO !!!
+[2025-11-10 00:24:03] Mensagem: Duplicate entry '97' for key 'pokemons.pokedex_index'
+[2025-11-10 00:24:03] ROLLBACK da transação executado.
+[2025-11-10 00:24:17] Iniciando processo de criação de Pokémon.
+[2025-11-10 00:24:17] Dados recebidos do formulário: {"nome":"fdgbzadsfs","pokedex_index":"4564","descricao":"","tipo_principal_id":"12","tipo_secundario_id":null,"habilidade":"","hp":"10","ataque":"10","defesa":"10","ataque_especial":"10","defesa_especial":"10","velocidade":"10"}
+[2025-11-10 00:24:17] Nova imagem '72.png' enviada. Tentando processar...
+[2025-11-10 00:24:17] Upload da imagem '691130b1a471d6.22667355.png' bem-sucedido para 'images/profilePhoto/691130b1a471d6.22667355.png'.
+[2025-11-10 00:24:17] Iniciando transação do banco de dados.
+[2025-11-10 00:24:17] Preparando SQL: INSERT INTO pokemons (nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2025-11-10 00:24:17] SQL executado com sucesso.
+[2025-11-10 00:24:17] COMMIT da transação de criação bem-sucedido.
+[2025-11-10 00:51:25] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:51:27] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:51:29] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:51:32] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:17] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:19] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:20] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:21] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:21] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:21] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:55:27] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:57:52] FALHA na conexão com o banco de dados: Connection refused
+[2025-11-10 00:57:54] FALHA na conexão com o banco de dados: Connection refused

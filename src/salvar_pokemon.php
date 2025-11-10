@@ -78,8 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_secundario_id = !empty($_POST['tipo_secundario_id']) ? $_POST['tipo_secundario_id'] : NULL;
     
     $params = [
-        'nome' => $_POST['nome'], 'descricao' => $_POST['descricao'],
-        'tipo_principal_id' => $_POST['tipo_principal_id'], 'tipo_secundario_id' => $tipo_secundario_id,
+        'nome' => $_POST['nome'], 
+        'pokedex_index' => $_POST['pokedex_index'],
+        'descricao' => $_POST['descricao'],
+        'tipo_principal_id' => $_POST['tipo_principal_id'], 
+        'tipo_secundario_id' => $tipo_secundario_id,
         'habilidade' => $_POST['habilidade'],
         'imagem_existente' => $_POST['imagem_existente'],
         'hp' => $_POST['hp'], 'ataque' => $_POST['ataque'], 'defesa' => $_POST['defesa'],
@@ -98,18 +101,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (empty($id)) {
             // INSERT
-            $sql = "INSERT INTO pokemons (nome, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO pokemons (nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade, imagem_padrao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             log_message("Preparando SQL: " . $sql);
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssiisiiiiiss", ...array_values($db_params));
+            $stmt->bind_param("sisiisiiiiiis", ...array_values($db_params));
         } else {
             // UPDATE
-            $sql = "UPDATE pokemons SET nome = ?, descricao = ?, tipo_principal_id = ?, tipo_secundario_id = ?, habilidade = ?, hp = ?, ataque = ?, defesa = ?, ataque_especial = ?, defesa_especial = ?, velocidade = ?, imagem_padrao = ? WHERE id = ?";
+            $sql = "UPDATE pokemons SET nome = ?, pokedex_index = ?, descricao = ?, tipo_principal_id = ?, tipo_secundario_id = ?, habilidade = ?, hp = ?, ataque = ?, defesa = ?, ataque_especial = ?, defesa_especial = ?, velocidade = ?, imagem_padrao = ? WHERE id = ?";
             log_message("Preparando SQL: " . $sql);
             $stmt = $conn->prepare($sql);
             $update_params = array_values($db_params);
             $update_params[] = $id;
-            $stmt->bind_param("ssiisiiiiissi", ...$update_params);
+            $stmt->bind_param("sisiisiiiiiisi", ...$update_params);
         }
 
         $stmt->execute();
@@ -144,16 +147,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         log_message("Mensagem: " . $e->getMessage());
         log_message("ROLLBACK da transação executado.");
 
+        $redirect_url = "form_pokemon.php?";
+        $error_type = 'generico';
+
         if (str_contains($e->getMessage(), 'chk_tipos_diferentes')) {
-            $redirect_url = "form_pokemon.php?error=tipos_iguais";
-            if (!empty($id)) {
-                $redirect_url .= "&id=" . $id;
-            }
-            header("Location: " . $redirect_url);
-            exit;
-        } else {
-            die("Erro ao salvar Pokémon: " . $e->getMessage());
+            $error_type = 'tipos_iguais';
+        } elseif (str_contains($e->getMessage(), 'pokedex_index')) { // Erro de chave única
+            $error_type = 'indice_duplicado';
         }
+        
+        $redirect_url .= "error=" . $error_type;
+        if (!empty($id)) {
+            $redirect_url .= "&id=" . $id;
+        }
+        header("Location: " . $redirect_url);
+        exit;
     }
 } else {
     header("Location: index.php");
