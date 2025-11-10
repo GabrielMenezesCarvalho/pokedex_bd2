@@ -67,9 +67,11 @@ $result = $conn->query($sql);
                 
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="<?= htmlspecialchars($pokemon['imagem_padrao'] ?: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png', ENT_QUOTES, 'UTF-8') ?>" 
-                             class="card-img-top" 
-                             alt="Imagem de <?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                        <a href="pokemon_details.php?id=<?= $pokemon['id'] ?>">
+                            <img src="<?= htmlspecialchars($pokemon['imagem_padrao'] ?: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png', ENT_QUOTES, 'UTF-8') ?>" 
+                                 class="card-img-top" 
+                                 alt="Imagem de <?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                        </a>
                         
                         <div class="card-body">
                             <h5 class="card-title fw-bold"><?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?></h5>
