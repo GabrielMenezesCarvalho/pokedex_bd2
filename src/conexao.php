@@ -14,6 +14,8 @@ try {
     
     // Define o charset para UTF-8 para evitar problemas com acentuação
     $conn->set_charset("utf8mb4");
+    $conn->query("SET NAMES 'utf8mb4'");
+
     //log_message("Conexão com o banco de dados '$db' estabelecida com sucesso.");
 } catch (Exception $e) {
     log_message("FALHA na conexão com o banco de dados: " . $e->getMessage());

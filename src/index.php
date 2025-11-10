@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 include 'conexao.php';
 
 $sql = "SELECT p.*, t.nome AS tipo_nome, t.icone AS tipo_icone
@@ -66,16 +67,16 @@ $result = $conn->query($sql);
                 
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="<?= htmlspecialchars($pokemon['imagem_padrao'] ?: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png') ?>" 
+                        <img src="<?= htmlspecialchars($pokemon['imagem_padrao'] ?: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png', ENT_QUOTES, 'UTF-8') ?>" 
                              class="card-img-top" 
-                             alt="Imagem de <?= htmlspecialchars($pokemon['nome']) ?>">
+                             alt="Imagem de <?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>">
                         
                         <div class="card-body">
-                            <h5 class="card-title fw-bold"><?= htmlspecialchars($pokemon['nome']) ?></h5>
+                            <h5 class="card-title fw-bold"><?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?></h5>
                             <p class="card-text">
                                 <span class="badge bg-secondary d-inline-flex align-items-center">
-                                    <img src="<?= htmlspecialchars($pokemon['tipo_icone'] ?? '') ?>" alt="<?= htmlspecialchars($pokemon['tipo_nome']) ?>" class="me-1" style="width: 16px; height: 16px;">
-                                    <?= htmlspecialchars($pokemon['tipo_nome'] ?? 'N/A') ?>
+                                    <img src="<?= htmlspecialchars($pokemon['tipo_icone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['tipo_nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="me-1" style="width: 16px; height: 16px;">
+                                    <?= htmlspecialchars($pokemon['tipo_nome'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?>
                                 </span>
                             </p>
                         </div>
@@ -83,7 +84,7 @@ $result = $conn->query($sql);
                             <a href="form_pokemon.php?id=<?= $pokemon['id'] ?>" class="btn btn-sm btn-outline-primary" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="salvar_pokemon.php?action=delete&id=<?= $pokemon['id'] ?>" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir <?= htmlspecialchars($pokemon['nome']) ?>?');">
+                            <a href="salvar_pokemon.php?action=delete&id=<?= $pokemon['id'] ?>" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir <?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?>?');">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>

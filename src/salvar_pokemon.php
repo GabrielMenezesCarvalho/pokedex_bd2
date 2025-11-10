@@ -78,12 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_secundario_id = !empty($_POST['tipo_secundario_id']) ? $_POST['tipo_secundario_id'] : NULL;
     
     $params = [
-        'nome' => $_POST['nome'], 
+        'nome' => mb_convert_encoding($_POST['nome'], 'UTF-8'), 
         'pokedex_index' => $_POST['pokedex_index'],
-        'descricao' => $_POST['descricao'],
+        'descricao' => mb_convert_encoding($_POST['descricao'], 'UTF-8'),
         'tipo_principal_id' => $_POST['tipo_principal_id'], 
         'tipo_secundario_id' => $tipo_secundario_id,
-        'habilidade' => $_POST['habilidade'],
+        'habilidade' => mb_convert_encoding($_POST['habilidade'], 'UTF-8'),
         'imagem_existente' => $_POST['imagem_existente'],
         'hp' => $_POST['hp'], 'ataque' => $_POST['ataque'], 'defesa' => $_POST['defesa'],
         'ataque_especial' => $_POST['ataque_especial'], 'defesa_especial' => $_POST['defesa_especial'],
