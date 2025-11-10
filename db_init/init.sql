@@ -65,7 +65,6 @@ VALUES
     (17, 'Steel', '/images/icons/Steel.png'),
     (18, 'Water', '/images/icons/Water.png');
 
--- Popular com os 25 primeiros Pokémon
 INSERT INTO pokemons (id, nome, pokedex_index, descricao, tipo_principal_id, tipo_secundario_id, habilidade, imagem_padrao, hp, ataque, defesa, ataque_especial, defesa_especial, velocidade) VALUES
 (1, 'Bulbasaur', 1, 'Há uma semente de planta em suas costas desde o dia em que este Pokémon nasce. A semente cresce lentamente.', 10, 14, 'Overgrow', '/images/profilePhoto/1.png', 45, 49, 49, 65, 65, 45),
 (2, 'Ivysaur', 2, 'Quando o bulbo em suas costas cresce, ele parece perder a capacidade de ficar em pé sobre as patas traseiras.', 10, 14, 'Overgrow', '/images/profilePhoto/2.png', 60, 62, 63, 80, 80, 60),

@@ -24,7 +24,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $stmt->close();
     }
 
-    // Fetch weaknesses
+    // Fetch fraquezas
     $sql_fraquezas = "SELECT t.nome AS fraqueza_nome, t.icone AS fraqueza_icone
                       FROM fraquezas f
                       JOIN tipos t ON f.tipo_id = t.id
