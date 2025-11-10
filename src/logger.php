@@ -3,7 +3,7 @@ function log_message($message) {
     $log_dir = __DIR__ . '/logs';
     if (!is_dir($log_dir)) {
         // Tenta criar o diretório se ele não existir (como um fallback)
-        // Usamos @ para suprimir erros caso o diretório não possa ser criado
+        // @ para suprimir erros caso o diretório não possa ser criado
         @mkdir($log_dir, 0777, true);
     }
 

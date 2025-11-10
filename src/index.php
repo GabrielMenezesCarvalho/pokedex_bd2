@@ -2,9 +2,12 @@
 header('Content-Type: text/html; charset=utf-8');
 include 'conexao.php';
 
-$sql = "SELECT p.*, t.nome AS tipo_nome, t.icone AS tipo_icone
+$sql = "SELECT p.*, 
+               tp.nome AS tipo_principal_nome, tp.icone AS tipo_principal_icone,
+               ts.nome AS tipo_secundario_nome, ts.icone AS tipo_secundario_icone
         FROM pokemons p
-        LEFT JOIN tipos t ON p.tipo_principal_id = t.id
+        LEFT JOIN tipos tp ON p.tipo_principal_id = tp.id
+        LEFT JOIN tipos ts ON p.tipo_secundario_id = ts.id
         ORDER BY p.pokedex_index";
 
 $result = $conn->query($sql);
@@ -37,6 +40,16 @@ $result = $conn->query($sql);
         }
         .navbar-brand {
             font-weight: bold;
+        }
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 5px;
+        }
+        .type-badge img {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -76,10 +89,18 @@ $result = $conn->query($sql);
                         <div class="card-body">
                             <h5 class="card-title fw-bold"><?= htmlspecialchars($pokemon['nome'], ENT_QUOTES, 'UTF-8') ?></h5>
                             <p class="card-text">
-                                <span class="badge bg-secondary d-inline-flex align-items-center">
-                                    <img src="<?= htmlspecialchars($pokemon['tipo_icone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['tipo_nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="me-1" style="width: 16px; height: 16px;">
-                                    <?= htmlspecialchars($pokemon['tipo_nome'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?>
-                                </span>
+                                <?php if ($pokemon['tipo_principal_nome']): ?>
+                                    <span class="badge bg-secondary type-badge">
+                                        <img src="<?= htmlspecialchars($pokemon['tipo_principal_icone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['tipo_principal_nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        <?= htmlspecialchars($pokemon['tipo_principal_nome'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                <?php endif; ?>
+                                <?php if ($pokemon['tipo_secundario_nome']): ?>
+                                    <span class="badge bg-secondary type-badge">
+                                        <img src="<?= htmlspecialchars($pokemon['tipo_secundario_icone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['tipo_secundario_nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        <?= htmlspecialchars($pokemon['tipo_secundario_nome'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                <?php endif; ?>
                             </p>
                         </div>
                         <div class="card-footer bg-light d-flex justify-content-end gap-2">

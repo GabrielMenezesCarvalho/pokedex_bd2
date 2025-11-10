@@ -1,14 +1,11 @@
 <?php
-// Inclui o logger
 require_once 'logger.php';
 
-// Lê as variáveis de ambiente fornecidas pelo docker-compose
 $host = getenv('MYSQL_HOST');
 $user = getenv('MYSQL_USER');
 $pass = getenv('MYSQL_PASSWORD');
 $db = getenv('MYSQL_DATABASE');
 
-// Tenta a conexão
 try {
     $conn = new mysqli($host, $user, $pass, $db);
     

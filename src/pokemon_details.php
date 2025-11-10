@@ -3,6 +3,8 @@ header('Content-Type: text/html; charset=utf-8');
 include 'conexao.php';
 
 $pokemon = null;
+$fraquezas = [];
+
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $pokemon_id = $_GET['id'];
 
@@ -21,10 +23,24 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $pokemon = $result->fetch_assoc();
         $stmt->close();
     }
+
+    // Fetch weaknesses
+    $sql_fraquezas = "SELECT t.nome AS fraqueza_nome, t.icone AS fraqueza_icone
+                      FROM fraquezas f
+                      JOIN tipos t ON f.tipo_id = t.id
+                      WHERE f.pokemon_id = ?";
+    if ($stmt_fraq = $conn->prepare($sql_fraquezas)) {
+        $stmt_fraq->bind_param("i", $pokemon_id);
+        $stmt_fraq->execute();
+        $result_fraq = $stmt_fraq->get_result();
+        while ($fraqueza = $result_fraq->fetch_assoc()) {
+            $fraquezas[] = $fraqueza;
+        }
+        $stmt_fraq->close();
+    }
 }
 
 if (!$pokemon) {
-    // Redirect to index or show an error if Pokémon not found
     header('Location: index.php');
     exit();
 }
@@ -105,6 +121,18 @@ if (!$pokemon) {
                                     <img src="<?= htmlspecialchars($pokemon['tipo_secundario_icone'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($pokemon['tipo_secundario_nome'], ENT_QUOTES, 'UTF-8') ?>">
                                     <?= htmlspecialchars($pokemon['tipo_secundario_nome'], ENT_QUOTES, 'UTF-8') ?>
                                 </span>
+                            <?php endif; ?>
+                        </p>
+                        <p><strong>Fraquezas:</strong> 
+                            <?php if (!empty($fraquezas)): ?>
+                                <?php foreach ($fraquezas as $fraqueza): ?>
+                                    <span class="badge bg-danger type-badge">
+                                        <img src="<?= htmlspecialchars($fraqueza['fraqueza_icone'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($fraqueza['fraqueza_nome'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <?= htmlspecialchars($fraqueza['fraqueza_nome'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                N/A
                             <?php endif; ?>
                         </p>
                         <p><strong>Descrição:</strong> <?= nl2br(htmlspecialchars($pokemon['descricao'], ENT_QUOTES, 'UTF-8')) ?></p>
