@@ -2,9 +2,10 @@
 include 'conexao.php'; // O logger já é incluído aqui
 
 // --- Lógica de Upload de Imagem ---
-function uploadImagem(&$params) {
+function uploadImagem(&$params)
+{
     $upload_dir = 'images/profilePhoto/';
-    $imagem_path = $params['imagem_existente']; 
+    $imagem_path = $params['imagem_existente'];
 
     if (isset($_FILES['imagem_padrao']) && $_FILES['imagem_padrao']['error'] === UPLOAD_ERR_OK) {
         log_message("Nova imagem '{$_FILES['imagem_padrao']['name']}' enviada. Tentando processar...");
@@ -76,17 +77,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     log_message("Iniciando processo de {$action} de Pokémon.");
 
     $tipo_secundario_id = !empty($_POST['tipo_secundario_id']) ? $_POST['tipo_secundario_id'] : NULL;
-    
     $params = [
-        'nome' => mb_convert_encoding($_POST['nome'], 'UTF-8'), 
+        'nome' => $_POST['nome'],
         'pokedex_index' => $_POST['pokedex_index'],
-        'descricao' => mb_convert_encoding($_POST['descricao'], 'UTF-8'),
-        'tipo_principal_id' => $_POST['tipo_principal_id'], 
+        'descricao' => $_POST['descricao'],
+        'tipo_principal_id' => $_POST['tipo_principal_id'],
         'tipo_secundario_id' => $tipo_secundario_id,
-        'habilidade' => mb_convert_encoding($_POST['habilidade'], 'UTF-8'),
+        'habilidade' => $_POST['habilidade'],
         'imagem_existente' => $_POST['imagem_existente'],
-        'hp' => $_POST['hp'], 'ataque' => $_POST['ataque'], 'defesa' => $_POST['defesa'],
-        'ataque_especial' => $_POST['ataque_especial'], 'defesa_especial' => $_POST['defesa_especial'],
+        'hp' => $_POST['hp'],
+        'ataque' => $_POST['ataque'],
+        'defesa' => $_POST['defesa'],
+        'ataque_especial' => $_POST['ataque_especial'],
+        'defesa_especial' => $_POST['defesa_especial'],
         'velocidade' => $_POST['velocidade']
     ];
     log_message("Dados recebidos do formulário: " . json_encode(array_filter($params, fn($key) => $key !== 'imagem_existente', ARRAY_FILTER_USE_KEY)));
@@ -117,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->execute();
         log_message("SQL executado com sucesso.");
-        
+
         if (empty($id)) {
             $id = $conn->insert_id;
         }
@@ -140,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
         log_message("COMMIT da transação de {$action} bem-sucedido.");
         header("Location: index.php?status=sucesso");
-
     } catch (Exception $e) {
         $conn->rollback();
         log_message("!!! ERRO DE BANCO DE DADOS DETECTADO !!!");
@@ -155,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (str_contains($e->getMessage(), 'pokedex_index')) { // Erro de chave única
             $error_type = 'indice_duplicado';
         }
-        
+
         $redirect_url .= "error=" . $error_type;
         if (!empty($id)) {
             $redirect_url .= "&id=" . $id;
@@ -168,4 +170,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
-?>

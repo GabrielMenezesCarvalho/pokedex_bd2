@@ -49,3 +49,4 @@ services:
 
 volumes:
   db_data: # Define o volume de persistência do banco
+  app_logs: # <--- ADICIONE ESTA LINHA (define o volume nomeado)

@@ -1,4 +1,6 @@
--- Seleciona o banco de dados que será criado pelo Docker
+SET NAMES 'utf8mb4';
+SET CHARACTER SET 'utf8mb4';
+
 USE pokedex_db;
 
 -- Tabela de Tipos
